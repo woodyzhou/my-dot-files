@@ -5,4 +5,10 @@ if not setup then
 end
 
 -- configure/enable gitsigns
-gitsigns.setup()
+gitsigns.setup({
+	watch_gitdir = {
+		interval = 60000,
+		follow_files = true,
+	},
+	update_debounce = 1000,
+})

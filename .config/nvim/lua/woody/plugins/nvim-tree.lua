@@ -11,8 +11,29 @@ vim.g.loaded_netrwPlugin = 1
 -- change color for arrows in tree to light blue
 vim.cmd([[ highlight NvimTreeIndentMarker guifg=#3FC5FF ]])
 
+local function my_on_attach(bufnr)
+	local api = require("nvim-tree.api")
+
+	local function opts(desc)
+		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+	end
+
+	-- default mappings
+	api.config.mappings.default_on_attach(bufnr)
+
+	-- delete mappings
+	vim.keymap.del("n", "s", { buffer = bufnr })
+
+	-- custom mappings
+	vim.keymap.set("n", "s", api.node.open.vertical, opts("Open: Vertical Split"))
+	vim.keymap.set("n", "i", api.node.open.horizontal, opts("Open: Horizontal Split"))
+	vim.keymap.set("n", "t", api.node.open.tab, opts("Open: New Tab"))
+	vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))
+end
+
 -- configure nvim-tree
 nvimtree.setup({
+	on_attach = my_on_attach,
 	-- change folder arrow icons
 	renderer = {
 		icons = {
@@ -37,15 +58,15 @@ nvimtree.setup({
 	},
 	view = {
 		adaptive_size = true,
-		mappings = {
-			list = {
-				{ key = "u", action = "dir_up" },
-				{ key = "s", action = "vsplit" },
-				{ key = "i", action = "split" },
-				{ key = "t", action = "tabnew" },
-				{ key = "?", action = "toggle_help" },
-			},
-		},
+		-- mappings = {
+		-- 	list = {
+		-- 		{ key = "u", action = "dir_up" },
+		-- 		{ key = "s", action = "vsplit" },
+		-- 		{ key = "i", action = "split" },
+		-- 		{ key = "t", action = "tabnew" },
+		-- 		{ key = "?", action = "toggle_help" },
+		-- 	},
+		-- },
 	},
 	git = {
 		enable = false,
