@@ -7,8 +7,7 @@ end
 -- configure/enable gitsigns
 gitsigns.setup({
 	watch_gitdir = {
-		interval = 60000,
-		follow_files = true,
+		follow_files = false,
 	},
 	update_debounce = 1000,
 })
